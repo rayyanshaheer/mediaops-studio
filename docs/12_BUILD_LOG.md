@@ -52,6 +52,8 @@ The production webhook is configured as `https://mediaops-studio.vercel.app/api/
 - Generated a high-entropy `AUTH_SECRET` and stored it as a write-only Vercel secret for Production, Preview, and Development.
 - Verified the authenticated Cloudinary CLI profile for cloud `dn1taxbpc` and confirmed Admin API access.
 - Created and re-read the signed `mediaops_release_v1` upload preset (`unsigned: false`).
+- Restricted the preset to JPG, JPEG, PNG, and WebP with deterministic overwrite behavior.
+- Recorded the Cloudinary Free environment's 10 MB image and 25-megapixel limits, then aligned browser and server validation to the 10 MB provider cap.
 - Stored the verified Cloudinary cloud name and upload preset in all Vercel environments.
 - Confirmed the CLI profile is OAuth-only: it intentionally contains no API key or API secret for the app's HMAC upload signatures.
 - Stored the owner login and supplied Cloudinary credentials as write-only Vercel secrets.
@@ -62,6 +64,7 @@ The production webhook is configured as `https://mediaops-studio.vercel.app/api/
 - Replaced the incorrect Cloudinary API key, verified the corrected key/secret pair against Cloudinary's API, and updated all Vercel environments.
 - Pinned the deployment runtime to Node.js 22.x after Vercel warned that an open-ended engine range would auto-upgrade major versions.
 - Redeployed production with the corrected Cloudinary credentials and Node.js 22.x runtime.
+- Redeployed the 10 MB upload-policy correction to production and rechecked application and database health.
 - Verified the production owner login reaches `/dashboard` with a 200 response through Vercel's protected request path.
 - Automatic GitHub connection is pending Vercel GitHub App permission for the new private repository.
 
@@ -69,7 +72,8 @@ The production webhook is configured as `https://mediaops-studio.vercel.app/api/
 
 - `npm run lint`: passed with no warnings.
 - `npm run typecheck`: passed under strict TypeScript.
-- `npm test`: 6 domain tests passed.
+- `npm test`: 12 domain and API-contract tests passed.
+- API-contract checks cover authentication, owned release creation, scoped signature parameters, oversized upload rejection, and forged-webhook rejection.
 - `npm run build`: passed; all pages and route handlers compiled.
 - Desktop browser check: sign-in layout and accessible control names verified.
 - Mobile browser check: 390 × 844 layout verified without horizontal overflow.

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { MAX_UPLOAD_BYTES } from "./upload-policy";
 
 export const createReleaseSchema = z.object({
   title: z.string().trim().min(3).max(120),
@@ -13,7 +14,7 @@ export const createReleaseSchema = z.object({
 
 export const uploadCompleteSchema = z.object({
   asset_id: z.string().min(1), public_id: z.string().min(1), version: z.number().int(),
-  width: z.number().int().positive(), height: z.number().int().positive(), bytes: z.number().int().positive(),
+  width: z.number().int().positive(), height: z.number().int().positive(), bytes: z.number().int().positive().max(MAX_UPLOAD_BYTES),
   format: z.string().min(1), resource_type: z.literal("image"), type: z.literal("upload"),
   secure_url: z.url(), etag: z.string().optional(), created_at: z.string(),
   signature: z.string().min(1),

@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { aggregateByteSavings, aggregateStatus, byteSavings, safePublicIdPart } from "./domain";
 import { RECIPES, transformationFor } from "./recipes";
+import { isSupportedImage, MAX_UPLOAD_BYTES } from "./upload-policy";
+import { uploadCompleteSchema } from "./validation";
 
 describe("release domain", () => {
   it("requires every current-generation recipe", () => {
@@ -28,5 +30,16 @@ describe("release domain", () => {
     expect(aggregateByteSavings(1000, [200, 300, null])).toBe(75);
     expect(aggregateByteSavings(0, [200])).toBeNull();
     expect(aggregateByteSavings(1000, [])).toBeNull();
+  });
+  it("enforces the provider upload limit and supported image types", () => {
+    expect(isSupportedImage({ type: "image/jpeg", size: MAX_UPLOAD_BYTES })).toBe(true);
+    expect(isSupportedImage({ type: "image/jpeg", size: MAX_UPLOAD_BYTES + 1 })).toBe(false);
+    expect(isSupportedImage({ type: "image/gif", size: 1024 })).toBe(false);
+    expect(uploadCompleteSchema.safeParse({
+      asset_id: "asset", public_id: "mediaops/user/release/master", version: 1,
+      width: 10, height: 10, bytes: MAX_UPLOAD_BYTES + 1, format: "jpg",
+      resource_type: "image", type: "upload", secure_url: "https://example.com/image.jpg",
+      created_at: new Date().toISOString(), signature: "signature",
+    }).success).toBe(false);
   });
 });

@@ -50,11 +50,11 @@ Create a **signed** upload preset named `mediaops_release_v1` (or change `CLOUDI
 
 - Resource type: image
 - Allowed formats: JPG, JPEG, PNG, WebP
-- Maximum file size: 15 MB
+- Allowed formats: JPG, JPEG, PNG, and WebP
 - Unique filenames disabled; overwrite enabled for deterministic master IDs
 - The production webhook URL uses HTTPS
 
-The application signs the public ID, preset, release tags/context, asynchronous eager recipes, and eager notification URL. Never expose `CLOUDINARY_API_SECRET` to the browser. To enable branding, upload a transparent logo and set `CLOUDINARY_LOGO_PUBLIC_ID`; exports work without an overlay when it is empty.
+Cloudinary upload presets do not support a per-preset file-size cap. The application therefore validates the 10 MB limit in the browser and again when accepting the signed upload response; the deployed Cloudinary Free environment independently enforces the same 10 MB image limit. The application signs the public ID, preset, release tags/context, asynchronous eager recipes, and eager notification URL. Never expose `CLOUDINARY_API_SECRET` to the browser. To enable branding, upload a transparent logo and set `CLOUDINARY_LOGO_PUBLIC_ID`; exports work without an overlay when it is empty.
 
 ## Environment
 
