@@ -34,13 +34,12 @@ This file records the implementation work completed alongside the source. It is 
 
 ## Remaining deployment inputs
 
-The repository, host, database, Cloudinary cloud, and signed upload preset are now provisioned. A functional live deployment still needs:
+The repository, host, database, Cloudinary cloud, signed upload preset, owner, and production deployment are now provisioned. Final public verification still needs:
 
-1. The Cloudinary API key and API secret used to generate direct-upload signatures, plus an optional logo public ID.
-2. The owner email and password for the single-owner login.
-3. Vercel GitHub App access to the new private repository if automatic deployments from `main` are required.
+1. An explicit decision to disable Vercel SSO protection so the app's own owner login and Cloudinary webhook are publicly reachable.
+2. Vercel GitHub App access to the private repository if automatic deployments from `main` are required.
 
-After deployment, the Cloudinary webhook URL must be set to `https://<deployment>/api/webhooks/cloudinary`, and one real upload must be smoke-tested.
+The production webhook is configured as `https://mediaops-studio.vercel.app/api/webhooks/cloudinary`. One real upload must be smoke-tested after Vercel SSO protection is disabled.
 
 ## 2026-10-13 — Deployment progress
 
@@ -55,8 +54,16 @@ After deployment, the Cloudinary webhook URL must be set to `https://<deployment
 - Created and re-read the signed `mediaops_release_v1` upload preset (`unsigned: false`).
 - Stored the verified Cloudinary cloud name and upload preset in all Vercel environments.
 - Confirmed the CLI profile is OAuth-only: it intentionally contains no API key or API secret for the app's HMAC upload signatures.
+- Stored the owner login and supplied Cloudinary credentials as write-only Vercel secrets.
+- Seeded Neon and verified one owner, one brand profile, and one transformation template without exposing owner data.
+- Deployed successfully to `https://mediaops-studio.vercel.app` and configured that canonical base URL and webhook path.
+- Verified the production liveness endpoint and Neon-backed readiness endpoint through Vercel's authenticated request path.
+- Kept Vercel SSO protection enabled pending explicit approval to expose the app's own login page.
+- Replaced the incorrect Cloudinary API key, verified the corrected key/secret pair against Cloudinary's API, and updated all Vercel environments.
+- Pinned the deployment runtime to Node.js 22.x after Vercel warned that an open-ended engine range would auto-upgrade major versions.
+- Redeployed production with the corrected Cloudinary credentials and Node.js 22.x runtime.
+- Verified the production owner login reaches `/dashboard` with a 200 response through Vercel's protected request path.
 - Automatic GitHub connection is pending Vercel GitHub App permission for the new private repository.
-- Production seeding and deployment are waiting for the final owner login and Cloudinary configuration.
 
 ## Verification record
 
@@ -67,7 +74,8 @@ After deployment, the Cloudinary webhook URL must be set to `https://<deployment
 - Desktop browser check: sign-in layout and accessible control names verified.
 - Mobile browser check: 390 × 844 layout verified without horizontal overflow.
 - Login failure check: incorrect credentials produce the expected visible error.
-- PostgreSQL runtime check: deferred because Docker Desktop and the local PostgreSQL daemon are unavailable on this machine.
+- Cloudinary credential check: authenticated API ping passed with the corrected production key and secret.
+- PostgreSQL runtime check: Neon migration, seed, and production readiness query passed.
 - Registry audit: runtime packages are clean except findings reachable only through the development-only Prisma CLI. The reported `deepmerge-ts` and `mysql2` packages are not imported by the deployed application.
 
 ## Deployment gate
