@@ -34,10 +34,10 @@ This file records the implementation work completed alongside the source. It is 
 
 ## Remaining deployment inputs
 
-The repository, host, and database are now provisioned. A functional live deployment still needs:
+The repository, host, database, Cloudinary cloud, and signed upload preset are now provisioned. A functional live deployment still needs:
 
-1. Cloudinary cloud name, API key, API secret, signed upload preset, and optionally a logo public ID.
-2. A production `AUTH_SECRET`, owner email, and password.
+1. The Cloudinary API key and API secret used to generate direct-upload signatures, plus an optional logo public ID.
+2. The owner email and password for the single-owner login.
 3. Vercel GitHub App access to the new private repository if automatic deployments from `main` are required.
 
 After deployment, the Cloudinary webhook URL must be set to `https://<deployment>/api/webhooks/cloudinary`, and one real upload must be smoke-tested.
@@ -51,6 +51,10 @@ After deployment, the Cloudinary webhook URL must be set to `https://<deployment
 - Connected Neon to all Vercel project environments and downloaded development credentials only into the ignored `.env.local` file.
 - Applied migration `20261013000000_initial` successfully to the Neon `neondb` production schema.
 - Generated a high-entropy `AUTH_SECRET` and stored it as a write-only Vercel secret for Production, Preview, and Development.
+- Verified the authenticated Cloudinary CLI profile for cloud `dn1taxbpc` and confirmed Admin API access.
+- Created and re-read the signed `mediaops_release_v1` upload preset (`unsigned: false`).
+- Stored the verified Cloudinary cloud name and upload preset in all Vercel environments.
+- Confirmed the CLI profile is OAuth-only: it intentionally contains no API key or API secret for the app's HMAC upload signatures.
 - Automatic GitHub connection is pending Vercel GitHub App permission for the new private repository.
 - Production seeding and deployment are waiting for the final owner login and Cloudinary configuration.
 
