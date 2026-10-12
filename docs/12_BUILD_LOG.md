@@ -67,6 +67,7 @@ The production webhook is configured as `https://mediaops-studio.vercel.app/api/
 - Redeployed the 10 MB upload-policy correction to production and rechecked application and database health.
 - Verified the production owner login reaches `/dashboard` with a 200 response through Vercel's protected request path.
 - Automatic GitHub connection is pending Vercel GitHub App permission for the new private repository.
+- Pinned CI to Ubuntu 24.04 and upgraded official checkout/setup actions to their Node 24-based v7 releases.
 
 ## Verification record
 
@@ -74,6 +75,7 @@ The production webhook is configured as `https://mediaops-studio.vercel.app/api/
 - `npm run typecheck`: passed under strict TypeScript.
 - `npm test`: 12 domain and API-contract tests passed.
 - API-contract checks cover authentication, owned release creation, scoped signature parameters, oversized upload rejection, and forged-webhook rejection.
+- GitHub Actions: the complete `main` verification job passed for commit `d9d9554` before the action-runtime maintenance update.
 - `npm run build`: passed; all pages and route handlers compiled.
 - Desktop browser check: sign-in layout and accessible control names verified.
 - Mobile browser check: 390 × 844 layout verified without horizontal overflow.
