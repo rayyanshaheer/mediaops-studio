@@ -10,3 +10,11 @@ src/generated
 *.log
 *.tsbuildinfo
 .DS_Store
+.vercel
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.agents/
+skills-lock.json

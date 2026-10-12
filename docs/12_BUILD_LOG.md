@@ -34,20 +34,31 @@ This file records the implementation work completed alongside the source. It is 
 
 ## Remaining deployment inputs
 
-The code can be built and tested without production credentials. A live deployment additionally needs:
+The repository, host, and database are now provisioned. A functional live deployment still needs:
 
-1. A PostgreSQL production connection string.
-2. Cloudinary cloud name, API key, API secret, signed upload preset, and optionally a logo public ID.
-3. A production `AUTH_SECRET`, owner email, and password.
-4. The selected deployment host and its authenticated CLI or connected Git repository.
+1. Cloudinary cloud name, API key, API secret, signed upload preset, and optionally a logo public ID.
+2. A production `AUTH_SECRET`, owner email, and password.
+3. Vercel GitHub App access to the new private repository if automatic deployments from `main` are required.
 
 After deployment, the Cloudinary webhook URL must be set to `https://<deployment>/api/webhooks/cloudinary`, and one real upload must be smoke-tested.
+
+## 2026-10-13 — Deployment progress
+
+- Created the private GitHub repository `rayyanshaheer/mediaops-studio` and preserved the old `test-repo` remote as `legacy-origin`.
+- Pushed commit `ae43d5e` to `rayyan/mediaops-studio` and `main`, then selected `main` as the repository default.
+- Authenticated Vercel and created the `rayyanshaheer-personalprojects/mediaops-studio` project.
+- Provisioned the Neon resource `neon-carmine-engine` through the official Vercel marketplace integration.
+- Connected Neon to all Vercel project environments and downloaded development credentials only into the ignored `.env.local` file.
+- Applied migration `20261013000000_initial` successfully to the Neon `neondb` production schema.
+- Generated a high-entropy `AUTH_SECRET` and stored it as a write-only Vercel secret for Production, Preview, and Development.
+- Automatic GitHub connection is pending Vercel GitHub App permission for the new private repository.
+- Production seeding and deployment are waiting for the final owner login and Cloudinary configuration.
 
 ## Verification record
 
 - `npm run lint`: passed with no warnings.
 - `npm run typecheck`: passed under strict TypeScript.
-- `npm test`: 5 domain tests passed.
+- `npm test`: 6 domain tests passed.
 - `npm run build`: passed; all pages and route handlers compiled.
 - Desktop browser check: sign-in layout and accessible control names verified.
 - Mobile browser check: 390 × 844 layout verified without horizontal overflow.
