@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ReleaseStatus {
+  DRAFT
+  UPLOADING
+  PROCESSING
+  READY
+  FAILED
+  ARCHIVED
+}
+
+enum VariantStatus {
+  PENDING
+  READY
+  FAILED
+}
+
+enum WatermarkGravity {
+  NORTH_WEST
+  NORTH_EAST
+  SOUTH_WEST
+  SOUTH_EAST
+}
+
+model User {
+  id            String         @id @default(uuid()) @db.Uuid
+  email         String         @unique
+  name          String
+  createdAt     DateTime       @default(now())
+  releases      MediaRelease[]
+  brandProfiles BrandProfile[]
+}
+
+model BrandProfile {
+  id               String           @id @default(uuid()) @db.Uuid
+  ownerId          String           @db.Uuid
+  owner            User             @relation(fields: [ownerId], references: [id])
+  name              String
+  logoAssetId       String?
+  logoPublicId      String?
+  primaryColor      String           @default("#d65a31")
+  watermarkGravity WatermarkGravity @default(SOUTH_EAST)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  releases          MediaRelease[]
+}
+
+model TransformationTemplateVersion {
+  id         String         @id @default(uuid()) @db.Uuid
+  key        String
+  version    Int
+  definition Json
+  active     Boolean        @default(true)
+  createdAt  DateTime       @default(now())
+  releases   MediaRelease[]
+  @@unique([key, version])
+}
+
+model MediaRelease {
+  id                String                        @id @default(uuid()) @db.Uuid
+  ownerId           String                        @db.Uuid
+  owner             User                          @relation(fields: [ownerId], references: [id])
+  brandProfileId    String                        @db.Uuid
+  brandProfile      BrandProfile                  @relation(fields: [brandProfileId], references: [id])
+  templateVersionId String                        @db.Uuid
+  templateVersion   TransformationTemplateVersion @relation(fields: [templateVersionId], references: [id])
+  title             String
+  eventName         String
+  campaign          String
+  speaker           String?
+  assetType         String
+  caption           String?
+  status            ReleaseStatus                 @default(DRAFT)
+  generation        Int                           @default(1)
+  failureCode       String?
+  failureMessage    String?
+  createdAt         DateTime                      @default(now())
+  updatedAt         DateTime                      @updatedAt
+  readyAt           DateTime?
+  sourceAsset       SourceAsset?
+  variants          MediaVariant[]
+  events            ProcessingEvent[]
+  @@index([ownerId, createdAt(sort: Desc)])
+  @@index([status, updatedAt])
+}
+
+model SourceAsset {
+  id                String       @id @default(uuid()) @db.Uuid
+  releaseId         String       @unique @db.Uuid
+  release           MediaRelease @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  cloudinaryAssetId String       @unique
+  publicId          String
+  version           Int
+  resourceType      String       @default("image")
+  deliveryType      String       @default("upload")
+  format            String
+  width             Int
+  height            Int
+  bytes             BigInt
+  etag              String?
+  secureUrl         String
+  uploadedAt        DateTime
+}
+
+model MediaVariant {
+  id             String        @id @default(uuid()) @db.Uuid
+  releaseId      String        @db.Uuid
+  release        MediaRelease  @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  generation     Int
+  recipeKey      String
+  recipeVersion  Int
+  status         VariantStatus @default(PENDING)
+  transformation String
+  width          Int?
+  height         Int?
+  format         String?
+  bytes          BigInt?
+  secureUrl      String?
+  errorCode      String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  @@unique([releaseId, generation, recipeKey])
+  @@index([releaseId, generation, status])
+}
+
+model ProcessingEvent {
+  id                String        @id @default(uuid()) @db.Uuid
+  releaseId         String?       @db.Uuid
+  release           MediaRelease? @relation(fields: [releaseId], references: [id], onDelete: SetNull)
+  provider           String        @default("cloudinary")
+  eventType          String
+  idempotencyKey     String        @unique
+  signatureValid     Boolean
+  receivedAt         DateTime      @default(now())
+  providerTimestamp  DateTime?
+  payload            Json
+  processedAt        DateTime?
+  processingError    String?
+  @@index([releaseId, receivedAt(sort: Desc)])
+}
