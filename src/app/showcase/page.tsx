@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-
-const outputUrl = "https://res.cloudinary.com/dn1taxbpc/image/upload/c_fill,g_auto,h_627,w_1200/l_mediaops:brands:4f9411d7-a7a7-49cc-8263-752c90a8a111:logo/c_scale,fl_relative,w_0.16/fl_layer_apply,g_south_east,x_48,y_48/f_jpg,q_85/v1791850919/mediaops/5ed26414-843c-4c06-9df5-41ca485e3119/654cc243-7ce5-41e6-b9eb-ddbfb86c55b9/master.jpg";
+import Image from "next/image";
+import productionEvidence from "../../../docs/assets/production-smoke-linkedin.jpg";
 
 export const metadata: Metadata = {
   title: "Creator Milestone",
@@ -36,8 +36,12 @@ export default function ShowcasePage() {
 
       <section className="showcase-proof" aria-labelledby="verified-output">
         <div className="showcase-image">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={outputUrl} alt="Branded LinkedIn export produced by MediaOps Studio" />
+          <Image
+            src={productionEvidence}
+            alt="Branded LinkedIn export produced by MediaOps Studio"
+            priority
+            sizes="(max-width: 900px) 100vw, 70vw"
+          />
         </div>
         <div className="showcase-proof-copy">
           <h2 id="verified-output">Verified production output</h2>
@@ -51,7 +55,7 @@ export default function ShowcasePage() {
             <div><dt>Processing time</dt><dd>13.6 seconds</dd></div>
             <div><dt>LinkedIn output</dt><dd>27,031 bytes, 63.8% smaller</dd></div>
           </dl>
-          <a className="text-action" href={outputUrl}>Open the Cloudinary asset ↗</a>
+          <a className="text-action" href="/login">Open the release application →</a>
         </div>
       </section>
 
