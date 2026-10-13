@@ -98,7 +98,7 @@ The production webhook is configured and verified at `https://mediaops-studio.ve
 
 - Added a public `/showcase` page so Cloudinary reviewers can inspect the verified result without owner credentials.
 - Published measured production evidence: the four output dimensions and byte sizes, 13.6-second processing time, and 63.8% reduction for the LinkedIn export.
-- Added ready-to-post project copy, Discord introduction, certificate brag, milestone message, follow-up email, and submission checklist in `docs/13_CREATOR_MILESTONE_SUBMISSION.md`.
+- Prepared the Creator Milestone submission copy as a local-only working document outside repository tracking.
 - Re-ran lint, strict type checking, all 16 tests, and the production build after the showcase work.
 
 ## Deployment gate

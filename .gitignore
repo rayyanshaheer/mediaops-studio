@@ -18,3 +18,4 @@ src/generated
 .env.production.local
 .agents/
 skills-lock.json
+docs/13_CREATOR_MILESTONE_SUBMISSION.md
