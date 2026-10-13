@@ -94,6 +94,13 @@ The production webhook is configured and verified at `https://mediaops-studio.ve
 - Webhook replay: a fresh valid signature returned success without increasing the event count or variant count.
 - Registry audit: runtime packages are clean except findings reachable only through the development-only Prisma CLI. The reported `deepmerge-ts` and `mysql2` packages are not imported by the deployed application.
 
+## 2026-10-13 — Creator Milestone package
+
+- Added a public `/showcase` page so Cloudinary reviewers can inspect the verified result without owner credentials.
+- Published measured production evidence: the four output dimensions and byte sizes, 13.6-second processing time, and 63.8% reduction for the LinkedIn export.
+- Added ready-to-post project copy, Discord introduction, certificate brag, milestone message, follow-up email, and submission checklist in `docs/13_CREATOR_MILESTONE_SUBMISSION.md`.
+- Re-ran lint, strict type checking, all 16 tests, and the production build after the showcase work.
+
 ## Deployment gate
 
 Next.js 16.4.0 is the current stable release as of this build. The Next.js team has announced an upstream security update for 2026-10-14. Apply that update and repeat the verification commands before making the public deployment permanent.

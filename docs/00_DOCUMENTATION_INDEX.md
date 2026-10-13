@@ -20,6 +20,7 @@ Build the image-first MVP before adding video, batch processing, or a free-form 
 10. [Testing, deployment, and operations](./10_TESTING_DEPLOYMENT_OPERATIONS.md)
 11. [Demo and Creator Milestone submission](./11_DEMO_AND_MILESTONE.md)
 12. [Implementation build log](./12_BUILD_LOG.md)
+13. [Creator Milestone submission pack](./13_CREATOR_MILESTONE_SUBMISSION.md)
 
 ## Proposed stack
 

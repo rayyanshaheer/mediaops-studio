@@ -4,6 +4,8 @@ MediaOps Studio turns one approved event image into four branded, production-rea
 
 **Live deployment:** [mediaops-studio.vercel.app](https://mediaops-studio.vercel.app)
 
+**Public Creator Milestone showcase:** [mediaops-studio.vercel.app/showcase](https://mediaops-studio.vercel.app/showcase)
+
 ![Verified branded LinkedIn export](docs/assets/production-smoke-linkedin.jpg)
 
 ## What it does
@@ -109,4 +111,4 @@ The included multi-stage Dockerfile is an alternative for any Node-compatible co
 
 Upload signatures are scoped on the server, sessions are HTTP-only and signed, failed owner logins are persistently throttled, webhook bodies are authenticated before state changes, replay timestamps are bounded, and idempotency keys make retries safe. This MVP is intentionally single-owner and image-only. Manual focal-point correction, batch releases, multiple organizations, social publishing, and deletion are post-MVP work.
 
-The complete product and architecture specification lives in [`docs/`](docs/00_DOCUMENTATION_INDEX.md). Delivered work is tracked in [`docs/12_BUILD_LOG.md`](docs/12_BUILD_LOG.md).
+The complete product and architecture specification lives in [`docs/`](docs/00_DOCUMENTATION_INDEX.md). Delivered work is tracked in [`docs/12_BUILD_LOG.md`](docs/12_BUILD_LOG.md), and the ready-to-post Cloudinary Creator Milestone copy is in [`docs/13_CREATOR_MILESTONE_SUBMISSION.md`](docs/13_CREATOR_MILESTONE_SUBMISSION.md).
