@@ -145,3 +145,11 @@ model ProcessingEvent {
   processingError    String?
   @@index([releaseId, receivedAt(sort: Desc)])
 }
+
+model LoginThrottle {
+  key             String    @id
+  attempts        Int       @default(0)
+  windowStartedAt DateTime
+  blockedUntil    DateTime?
+  updatedAt       DateTime  @updatedAt
+}

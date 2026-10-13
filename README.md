@@ -2,6 +2,10 @@
 
 MediaOps Studio turns one approved event image into four branded, production-ready channel exports and a responsive Cloudinary delivery URL.
 
+**Live deployment:** [mediaops-studio.vercel.app](https://mediaops-studio.vercel.app)
+
+![Verified branded LinkedIn export](docs/assets/production-smoke-linkedin.jpg)
+
 ## What it does
 
 A signed-in media owner creates a release, records event metadata, and uploads a JPG, PNG, or WebP directly to Cloudinary. Cloudinary produces four eager JPG derivatives with subject-aware cropping. Verified webhooks update the release; it becomes `READY` only when the master and all required outputs exist.
@@ -49,7 +53,6 @@ For local webhook delivery, expose port 3000 through an HTTPS tunnel and set `CL
 Create a **signed** upload preset named `mediaops_release_v1` (or change `CLOUDINARY_UPLOAD_PRESET`) with these restrictions:
 
 - Resource type: image
-- Allowed formats: JPG, JPEG, PNG, WebP
 - Allowed formats: JPG, JPEG, PNG, and WebP
 - Unique filenames disabled; overwrite enabled for deterministic master IDs
 - The production webhook URL uses HTTPS
@@ -104,6 +107,6 @@ The included multi-stage Dockerfile is an alternative for any Node-compatible co
 
 ## Security and limitations
 
-Upload signatures are scoped on the server, sessions are HTTP-only and signed, webhook bodies are authenticated before state changes, replay timestamps are bounded, and idempotency keys make retries safe. This MVP is intentionally single-owner and image-only. Manual focal-point correction, batch releases, multiple organizations, social publishing, and deletion are post-MVP work.
+Upload signatures are scoped on the server, sessions are HTTP-only and signed, failed owner logins are persistently throttled, webhook bodies are authenticated before state changes, replay timestamps are bounded, and idempotency keys make retries safe. This MVP is intentionally single-owner and image-only. Manual focal-point correction, batch releases, multiple organizations, social publishing, and deletion are post-MVP work.
 
 The complete product and architecture specification lives in [`docs/`](docs/00_DOCUMENTATION_INDEX.md). Delivered work is tracked in [`docs/12_BUILD_LOG.md`](docs/12_BUILD_LOG.md).

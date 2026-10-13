@@ -22,7 +22,7 @@ export type RecipeKey = (typeof RECIPES)[number]["key"];
 export function transformationFor(recipe: ReleaseRecipe, logoPublicId?: string | null) {
   const base = `c_${recipe.crop},g_${recipe.gravity},h_${recipe.height},w_${recipe.width}`;
   const overlay = logoPublicId
-    ? `/c_scale,fl_relative,w_0.16/l_${logoPublicId.replaceAll("/", ":")}/fl_layer_apply,g_south_east,x_48,y_48`
+    ? `/l_${logoPublicId.replaceAll("/", ":")}/c_scale,fl_relative,w_0.16/fl_layer_apply,g_south_east,x_48,y_48`
     : "";
   return `${base}${overlay}/f_${recipe.format},q_${recipe.quality}`;
 }

@@ -63,27 +63,27 @@ Exit condition: a real upload reaches `READY` through verified notifications and
 
 ## Phase 5: Preview and release package
 
-- [ ] Build the four-variant preview grid.
-- [ ] Display dimensions, format, and bytes.
-- [ ] Add fixed JPG download actions.
-- [ ] Add copyable responsive delivery URLs.
-- [ ] Implement the release manifest endpoint.
-- [ ] Calculate source-to-output byte comparisons.
-- [ ] Add accessible labels, keyboard controls, and alt text.
+- [x] Build the four-variant preview grid.
+- [x] Display dimensions, format, and bytes.
+- [x] Add fixed JPG download actions.
+- [x] Add copyable responsive delivery URLs.
+- [x] Implement the release manifest endpoint.
+- [x] Calculate source-to-output byte comparisons.
+- [x] Add accessible labels, keyboard controls, and alt text.
 
 Exit condition: the complete three-minute demo works from a fresh release.
 
 ## Phase 6: Production hardening
 
-- [ ] Add request IDs and structured logging.
-- [ ] Rate-limit signature and retry endpoints.
-- [ ] Redact secrets and signatures from logs.
-- [ ] Add health and readiness endpoints.
-- [ ] Add reconciliation in dry-run mode.
-- [ ] Add CI checks for lint, types, unit tests, integration tests, and build.
-- [ ] Deploy the app and database.
-- [ ] Configure the production webhook URL.
-- [ ] Run a production smoke test.
+- [x] Add request IDs and structured logging.
+- [x] Rate-limit signature creation and cap retry generations.
+- [x] Redact secrets and signatures from logs.
+- [x] Add health and readiness endpoints.
+- [x] Add reconciliation in dry-run mode.
+- [x] Add CI checks for lint, types, unit tests, integration tests, and build.
+- [x] Deploy the app and database.
+- [x] Configure the production webhook URL.
+- [x] Run a production smoke test.
 
 Exit condition: a deployed release completes successfully and failed requests can be diagnosed from logs.
 

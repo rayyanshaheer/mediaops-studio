@@ -26,6 +26,11 @@ describe("release domain", () => {
   it("keeps fixed downloads explicit jpgs", () => {
     for (const recipe of RECIPES) expect(transformationFor(recipe)).toContain(`/f_jpg,q_85`);
   });
+  it("declares the logo layer before applying relative overlay scaling", () => {
+    expect(transformationFor(RECIPES[0], "mediaops/brands/default/logo")).toContain(
+      "/l_mediaops:brands:default:logo/c_scale,fl_relative,w_0.16/fl_layer_apply,g_south_east,x_48,y_48/",
+    );
+  });
   it("calculates comparable package savings", () => {
     expect(aggregateByteSavings(1000, [200, 300, null])).toBe(75);
     expect(aggregateByteSavings(0, [200])).toBeNull();

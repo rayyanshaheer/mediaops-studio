@@ -28,18 +28,19 @@ This file records the implementation work completed alongside the source. It is 
 - Added liveness and database readiness endpoints.
 - Added stable API errors and request IDs.
 - Added signature endpoint throttling, upload type/size checks, secret-safe configuration, and baseline security headers.
+- Added persistent, hashed-IP owner-login throttling: five failed attempts trigger a 15-minute block shared across server instances.
 - Added a Cloudinary-scoped content security policy and global API request IDs.
 - Added unit tests for recipe output, readiness, stale generations, safe public IDs, and byte savings.
 - Added a dry-run-by-default reconciliation command with explicit `--apply` mode and an idempotent audit event.
 
 ## Remaining deployment inputs
 
-The repository, host, database, Cloudinary cloud, signed upload preset, owner, and production deployment are now provisioned. Final public verification still needs:
+The repository, host, database, Cloudinary cloud, signed upload preset, owner, public deployment, and real media pipeline are provisioned and verified. Remaining external maintenance is:
 
-1. An explicit decision to disable Vercel SSO protection so the app's own owner login and Cloudinary webhook are publicly reachable.
-2. Vercel GitHub App access to the private repository if automatic deployments from `main` are required.
+1. Apply the announced Next.js security update when it is published on 2026-10-14, then repeat the verification suite and redeploy.
+2. Grant the Vercel GitHub App access to the private repository if automatic deployments from `main` are required; authenticated CLI deployment already works.
 
-The production webhook is configured as `https://mediaops-studio.vercel.app/api/webhooks/cloudinary`. One real upload must be smoke-tested after Vercel SSO protection is disabled.
+The production webhook is configured and verified at `https://mediaops-studio.vercel.app/api/webhooks/cloudinary`.
 
 ## 2026-10-13 — Deployment progress
 
@@ -60,12 +61,18 @@ The production webhook is configured as `https://mediaops-studio.vercel.app/api/
 - Seeded Neon and verified one owner, one brand profile, and one transformation template without exposing owner data.
 - Deployed successfully to `https://mediaops-studio.vercel.app` and configured that canonical base URL and webhook path.
 - Verified the production liveness endpoint and Neon-backed readiness endpoint through Vercel's authenticated request path.
-- Kept Vercel SSO protection enabled pending explicit approval to expose the app's own login page.
+- Disabled Vercel SSO protection after explicit owner approval; the application login continues to protect the dashboard.
 - Replaced the incorrect Cloudinary API key, verified the corrected key/secret pair against Cloudinary's API, and updated all Vercel environments.
 - Pinned the deployment runtime to Node.js 22.x after Vercel warned that an open-ended engine range would auto-upgrade major versions.
 - Redeployed production with the corrected Cloudinary credentials and Node.js 22.x runtime.
 - Redeployed the 10 MB upload-policy correction to production and rechecked application and database health.
 - Verified the production owner login reaches `/dashboard` with a 200 response through Vercel's protected request path.
+- Applied migration `20261013051000_add_login_throttle` and deployed persistent hashed-IP login throttling before public exposure.
+- Verified the public login returns 200, readiness returns `ready`, and an unsigned public webhook request is rejected with 401.
+- Created a deterministic transparent MediaOps watermark, uploaded it with `cld`, and attached it to the production brand profile.
+- Visually detected and fixed an incorrect Cloudinary overlay transformation order, then added a regression assertion.
+- Completed a corrected branded production release (`654cc243-7ce5-41e6-b9eb-ddbfb86c55b9`) with all four outputs `READY`.
+- Saved the verified 1200 × 627 branded derivative as `docs/assets/production-smoke-linkedin.jpg`.
 - Automatic GitHub connection is pending Vercel GitHub App permission for the new private repository.
 - Pinned CI to Ubuntu 24.04 and upgraded official checkout/setup actions to their Node 24-based v7 releases.
 
@@ -73,15 +80,18 @@ The production webhook is configured as `https://mediaops-studio.vercel.app/api/
 
 - `npm run lint`: passed with no warnings.
 - `npm run typecheck`: passed under strict TypeScript.
-- `npm test`: 12 domain and API-contract tests passed.
+- `npm test`: 16 domain, authentication, and API-contract tests passed.
 - API-contract checks cover authentication, owned release creation, scoped signature parameters, oversized upload rejection, and forged-webhook rejection.
 - GitHub Actions: the complete `main` verification job passed for commit `d9d9554` before the action-runtime maintenance update.
 - `npm run build`: passed; all pages and route handlers compiled.
 - Desktop browser check: sign-in layout and accessible control names verified.
 - Mobile browser check: 390 × 844 layout verified without horizontal overflow.
 - Login failure check: incorrect credentials produce the expected visible error.
+- Production login-throttle smoke: an invalid attempt was recorded and rejected, then the correct owner login succeeded and cleared the failure record.
 - Cloudinary credential check: authenticated API ping passed with the corrected production key and secret.
 - PostgreSQL runtime check: Neon migration, seed, and production readiness query passed.
+- Real Cloudinary upload: source persisted, four variants reached `READY`, manifest contained all recipes, and all four CDN downloads returned 200.
+- Webhook replay: a fresh valid signature returned success without increasing the event count or variant count.
 - Registry audit: runtime packages are clean except findings reachable only through the development-only Prisma CLI. The reported `deepmerge-ts` and `mysql2` packages are not imported by the deployed application.
 
 ## Deployment gate

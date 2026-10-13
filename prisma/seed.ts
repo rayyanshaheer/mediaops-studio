@@ -7,6 +7,7 @@ if (!databaseUrl) throw new Error("DATABASE_URL is required");
 const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString: databaseUrl }) });
 
 async function main() {
+  const logoPublicId = process.env.CLOUDINARY_LOGO_PUBLIC_ID || null;
   const user = await prisma.user.upsert({
     where: { email: process.env.DEMO_EMAIL ?? "owner@mediaops.local" },
     update: {},
@@ -14,12 +15,12 @@ async function main() {
   });
   await prisma.brandProfile.upsert({
     where: { id: "4f9411d7-a7a7-49cc-8263-752c90a8a111" },
-    update: { logoPublicId: process.env.CLOUDINARY_LOGO_PUBLIC_ID || null },
+    update: logoPublicId ? { logoPublicId } : {},
     create: {
       id: "4f9411d7-a7a7-49cc-8263-752c90a8a111",
       ownerId: user.id,
       name: "MediaOps Brand",
-      logoPublicId: process.env.CLOUDINARY_LOGO_PUBLIC_ID || null,
+      logoPublicId,
     },
   });
   await prisma.transformationTemplateVersion.upsert({

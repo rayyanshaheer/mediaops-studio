@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="240" viewBox="0 0 1180 240" role="img" aria-labelledby="title">
+  <title id="title">MediaOps</title>
+  <g fill="none" stroke="#fff" stroke-linecap="square" stroke-width="22">
+    <path d="M24 88V24h64M176 24h40v64M216 152v64h-64M88 216H24v-64"/>
+    <circle cx="120" cy="120" r="55"/>
+    <path d="M120 65l32 55-32 55-32-55z"/>
+  </g>
+  <text x="266" y="163" fill="#fff" font-family="DejaVu Sans, sans-serif" font-size="120" font-weight="700">MEDIAOPS</text>
+</svg>

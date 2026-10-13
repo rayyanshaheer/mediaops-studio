@@ -100,18 +100,18 @@ Validate required variables at startup. Do not commit real values.
 
 ## Deployment checklist
 
-- [ ] Production database exists and accepts encrypted connections.
-- [ ] Migrations ran successfully.
-- [ ] Runtime secrets exist only in the hosting secret store.
-- [ ] Application base URL uses HTTPS.
-- [ ] Cloudinary preset has the expected restrictions.
-- [ ] Cloudinary notification URL points to production HTTPS.
-- [ ] Webhook signature verification passes a real notification.
-- [ ] CORS and content-security policy allow only required media and upload hosts.
-- [ ] Signature endpoint has rate limiting.
-- [ ] Logs redact secrets and request signatures.
-- [ ] Demo seed does not contain private data.
-- [ ] A signed-out user can open only intended public pages.
+- [x] Production database exists and accepts encrypted connections.
+- [x] Migrations ran successfully.
+- [x] Runtime secrets exist only in the hosting secret store.
+- [x] Application base URL uses HTTPS.
+- [x] Cloudinary preset has the expected restrictions.
+- [x] Cloudinary notification URL points to production HTTPS.
+- [x] Webhook signature verification passes a real notification.
+- [x] CORS and content-security policy allow only required media and upload hosts.
+- [x] Signature endpoint has rate limiting.
+- [x] Logs redact secrets and request signatures.
+- [x] Demo seed does not contain private data.
+- [x] A signed-out user can open only intended public pages.
 
 ## Operational runbook
 
