@@ -73,7 +73,8 @@ The production webhook is configured and verified at `https://mediaops-studio.ve
 - Visually detected and fixed an incorrect Cloudinary overlay transformation order, then added a regression assertion.
 - Completed a corrected branded production release (`654cc243-7ce5-41e6-b9eb-ddbfb86c55b9`) with all four outputs `READY`.
 - Saved the verified 1200 × 627 branded derivative as `docs/assets/production-smoke-linkedin.jpg`.
-- Automatic GitHub connection is pending Vercel GitHub App permission for the new private repository.
+- Made `rayyanshaheer/mediaops-studio` public after auditing tracked files and reachable history for credentials.
+- Granted the Vercel GitHub App access only to `mediaops-studio` and connected the project with `main` as the production branch.
 - Pinned CI to Ubuntu 24.04 and upgraded official checkout/setup actions to their Node 24-based v7 releases.
 
 ## Verification record
